@@ -80,7 +80,16 @@ public class BinaryTree<V> {
 	public int size() {
 		if(this == null)
 			return 0;
-		return this.leftChild.size() + this.rightChild.size() + 1;
+		
+		int leftSubTreeSize = 0;
+		if(this.leftChild != null)
+			leftSubTreeSize = this.leftChild.size();
+		
+		int rightSubTreeSize = 0;
+		if(this.rightChild != null)
+			rightSubTreeSize = this.rightChild.size();
+		
+		return leftSubTreeSize + rightSubTreeSize + 1;
 	}
 	
 	/**
@@ -96,11 +105,14 @@ public class BinaryTree<V> {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		HashMap<String, String> hm = new HashMap<String, String>();
-		hm.put("a", "1");
-		System.out.println(hm.size());
-		hm.clear();
-		System.out.println(hm.size());
+		BinaryTree<String> bt1 = new BinaryTree<String>("2");
+		BinaryTree<String> bt2 = new BinaryTree<String>("1");
+		BinaryTree<String> bt3 = new BinaryTree<String>("1");
+		bt1.setLeftChild(bt2);
+		bt2.setRightChild(bt3);
+		System.out.println(bt1.size());
+		bt1.clear();
+		System.out.println(bt1.size());
 	}
 
 }
