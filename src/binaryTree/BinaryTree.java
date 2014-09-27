@@ -100,6 +100,29 @@ public class BinaryTree<V> {
 		this.leftChild = null;
 		this.rightChild = null;
 	}
+	
+	/**
+	 * Returns true if this BinaryTree contains the specified BinaryTree node
+	 * @param key
+	 * @return
+	 */
+	public boolean contains(BinaryTree<V> key) {
+		if(key == null)
+			return false;
+		
+		if(this == key)
+			return true;
+		
+		if(this.leftChild != null)
+			if(this.leftChild.contains(key))
+				return true;
+		
+		if(this.rightChild != null)
+			if(this.rightChild.contains(key))
+				return true;
+
+		return false;
+	}
 
 	/**
 	 * @param args
@@ -108,11 +131,10 @@ public class BinaryTree<V> {
 		BinaryTree<String> bt1 = new BinaryTree<String>("2");
 		BinaryTree<String> bt2 = new BinaryTree<String>("1");
 		BinaryTree<String> bt3 = new BinaryTree<String>("1");
+		
 		bt1.setLeftChild(bt2);
 		bt2.setRightChild(bt3);
-		System.out.println(bt1.size());
-		bt1.clear();
-		System.out.println(bt1.size());
+		System.out.println(bt1.contains(bt3));
 	}
 
 }
