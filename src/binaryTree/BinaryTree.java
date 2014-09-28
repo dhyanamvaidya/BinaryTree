@@ -4,6 +4,7 @@
 package binaryTree;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 /**
  * @author dhyanamvaidya
@@ -360,8 +361,6 @@ public class BinaryTree<V> {
 	 * 	@Override
 	 */
     public int hashCode() {
-		if(this == null)
-			return 0;
     	int rootHash = this.getValue().hashCode();
     	int leftChildHash = 0;
     	if(this.leftChild != null)
@@ -370,6 +369,77 @@ public class BinaryTree<V> {
     	if(this.rightChild != null)
     		this.getRightChild().hashCode();
     	return 17 * (rootHash + leftChildHash + rightChildHash);
+	}
+    
+    @SuppressWarnings("rawtypes")
+	public LinkedList<BinaryTree<V>> getLeaves() {
+    	LinkedList<BinaryTree<V>> list = new LinkedList<BinaryTree<V>>();
+    	if(this.leftChild == null && this.rightChild == null)
+    		list.add(this);
+    	
+    	if(this.leftChild != null)
+    		list.addAll(this.leftChild.getLeaves());
+    	if(this.rightChild != null)
+    		list.addAll(this.rightChild.getLeaves());
+    		
+    	return list;
+    }
+    
+    /**
+     * Returns true if the left subtree of this node is the same as its
+     * right subtree in values and shape
+     * @return
+     */
+    public boolean isSymmetric() {
+    	if(this.leftChild == null)
+    		return this.rightChild == null;
+    	else
+    		return this.leftChild.equals(this.rightChild);
+	}
+    
+    /**
+     * Returns true if difference between heights of its left subtrees and right subtrees
+     * is not more than 1 and left and right subtrees are balanced, otherwise return false.
+     * @return
+     */
+    public boolean isBalanced() {
+    	int leftSubTreeHeight = getHeightHelper(this.leftChild);
+    	int rightSubTreeHeight = getHeightHelper(this.rightChild);
+    	
+		int difference = leftSubTreeHeight - rightSubTreeHeight;
+		int absDifference = (difference < 0) ? -difference : difference;
+		
+		return absDifference < 2;
+	}
+	
+    /**
+     * Returns the height of the BinaryTree on which this method is called
+     * For a tree with just one node, the root node, the height is defined to be 0,
+     * 	if there are 2 levels of nodes the height is 1 and so on
+     * 	A null tree (no nodes except the null node) is defined to have a height of Ð1
+     * Height of a tree is the depth of farthest most leaf node from the root (max depth)
+     * @param root
+     * @return
+     */
+	public int getHeight() {
+		return getHeightHelper(this);
+	}
+	
+	/**
+	 * Private helper method to the getHeight() method which does the actual work
+	 * @param root
+	 * @return
+	 */
+	private int getHeightHelper(BinaryTree<V> root) {
+		if(root==null) {
+			return -1;
+		}
+		else {
+			int leftSubTreeHeight = getHeightHelper(root.leftChild)+1;
+			int rightSubTreeHeight = getHeightHelper(root.rightChild)+1;
+			
+			return leftSubTreeHeight > rightSubTreeHeight ? leftSubTreeHeight : rightSubTreeHeight;
+		}
 	}
 
 	/**
@@ -411,16 +481,29 @@ public class BinaryTree<V> {
 		System.out.println(root.toString());
 		
 //		BinaryTree<String> anotherRoot = BinaryTree.parse(treeDescription);
-		BinaryTree<String> anotherRoot = BinaryTree.parse("1(2 3)");
+		BinaryTree<String> anotherRoot = BinaryTree.parse("13(10(1 12(11)) 15(13 17(21(18))))");
 		System.out.println(root.equals(anotherRoot));
 		System.out.println("Size: "+anotherRoot.size());
 		System.out.println(root.hashCode() + " -- "+anotherRoot.hashCode());
 		System.out.println("3".hashCode() + " -- "+"3".hashCode());
 		
+		System.out.println("Balanced or not: "+anotherRoot.isBalanced());
+		System.out.println("Ex Height: "+anotherRoot.getHeight());
+		
 		//checking string builder delete method
 		/*StringBuilder sb = new StringBuilder("dhyanam");
 		System.out.println(sb.toString());
 		sb.delete(0, sb.length());	*/	
+		
+		LinkedList<BinaryTree<String>> l = new LinkedList<BinaryTree<String>>();
+		l = anotherRoot.getLeaves();
+		
+		System.out.println("-------------Print-------------");
+		anotherRoot.print();
+		System.out.println("-------------PrintLeaves-------------");
+		for(BinaryTree<String> bt : l)
+			System.out.println(bt.value);
+		
 	}
 
 }
