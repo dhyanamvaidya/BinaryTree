@@ -163,7 +163,7 @@ public class BinaryTree<V> {
 	 * a value is any sequence of characters not containing parentheses or 
 	 * whitespace, and each child is either just a (String) value or is 
 	 * another treeDescription. Whitespace is used to separate values.
-	 * For example, the String "one(two three(four(six seven) five)) six" 
+	 * For example, the String "one(two three(four(six seven) five))" 
 	 * becomes the Tree:
 	 *                            one
 	 *                            / \
@@ -269,6 +269,10 @@ public class BinaryTree<V> {
 		this.printHelper("");
 	}
 
+	/**
+	 * Helper method to print which does the actual work
+	 * @param string
+	 */
 	private void printHelper(String string) {
 		StringBuilder indent = new StringBuilder(string);
 		System.out.println(indent.toString()+this.getValue());
@@ -277,6 +281,38 @@ public class BinaryTree<V> {
 			this.leftChild.printHelper(indent.toString());
 		if(this.rightChild != null)
 			this.rightChild.printHelper(indent.toString());
+	}
+	
+	/**
+	 * Returns a String representing this Tree. The returned String
+	 * is in the same format as the parse method expects as input.
+	 * For example, for the Tree:
+	 *                            one
+	 *                            / \
+	 *                           /   \
+	 *                         two  three
+	 *                         		 /\
+	 *                         		/  \
+	 *                            four five
+	 *                             /\
+	 *                            /  \
+	 *                          six seven
+	 * toString method will return the below String,
+	 * "one(two three(four(six seven) five))"
+	 * @Override
+	*/
+	public String toString() {
+		StringBuilder representation = new StringBuilder("");
+		representation.append(this.getValue());
+		if(this.leftChild != null && this.rightChild != null) {
+			representation.append("(");
+			if(this.leftChild != null) 
+				representation.append(this.leftChild.toString());
+			if(this.rightChild != null)
+				representation.append(" "+this.rightChild.toString());
+			representation.append(")");
+		}
+		return representation.toString();
 	}
 
 	/**
@@ -292,7 +328,7 @@ public class BinaryTree<V> {
 		System.out.println(bt1.contains(bt3));*/
 		
 		//checking substring in parse
-		String treeDescription = "one(two(four(six seven) five))";
+		String treeDescription = "one(two(four(six seven) five) three)";
 		/*int firstParenOccurrence = treeDescription.indexOf('(');
 		String rootValue = treeDescription.substring(0, firstParenOccurrence);
 		String childrenValue = treeDescription.substring(firstParenOccurrence+1, treeDescription.length()-1);*/
@@ -314,6 +350,8 @@ public class BinaryTree<V> {
 		root.postOrderTraversal();
 		System.out.println("-------------Print-------------");
 		root.print();
+		System.out.println("-------------ToString-------------");
+		System.out.println(root.toString());
 		
 		//checking string builder delete method
 		/*StringBuilder sb = new StringBuilder("dhyanam");
