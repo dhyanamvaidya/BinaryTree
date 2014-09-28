@@ -194,9 +194,10 @@ public class BinaryTree<V> {
 			ArrayList<String> tokenizedChildren = tokenizeChildren(childrenValue);
 			if(tokenizedChildren.size() == 1)
 				root.leftChild = parse(tokenizedChildren.get(0));
-			else if(tokenizedChildren.size() == 2)
+			else if(tokenizedChildren.size() == 2) {
 				root.leftChild = parse(tokenizedChildren.get(0));
 				root.rightChild = parse(tokenizedChildren.get(1));
+			}
 		}
 		return root;
 	}
@@ -209,12 +210,14 @@ public class BinaryTree<V> {
 	 * @return
 	 */
 	public static ArrayList<String> tokenizeChildren(String childrenValue) {
+		System.out.println("child we got: "+childrenValue);
 		ArrayList<String> tokenizedChildren = new ArrayList<String>();
 		StringBuilder temp = new StringBuilder("");
 		int parenCounter = 0;
 		for(int i=0; i<childrenValue.length(); i++) {
 			if(childrenValue.charAt(i) == ' ' || i == childrenValue.length()-1) {
 				temp.append(childrenValue.charAt(i));
+				System.out.println("Finale: "+temp.toString().trim());
 				tokenizedChildren.add(temp.toString().trim());
 				temp.delete(0, temp.length());
 			}
@@ -239,6 +242,42 @@ public class BinaryTree<V> {
 		}
 		return tokenizedChildren;
 	}
+	
+	/**
+	 * Prints a multi-line version of the tree
+	 * For example, for the Tree:
+	 *                            one
+	 *                            / \
+	 *                           /   \
+	 *                         two  three
+	 *                         		 /\
+	 *                         		/  \
+	 *                            four five
+	 *                             /\
+	 *                            /  \
+	 *                          six seven
+	 * print method will output the below tree
+	 * one
+	 * |  two
+	 * |  three
+	 * |  |  four
+	 * |  |  |  six
+	 * |  |  |  seven
+	 * |  |  five
+	 */
+	public void print() {
+		this.printHelper("");
+	}
+
+	private void printHelper(String string) {
+		StringBuilder indent = new StringBuilder(string);
+		System.out.println(indent.toString()+this.getValue());
+		indent.append("|\t");
+		if(this.leftChild != null)
+			this.leftChild.printHelper(indent.toString());
+		if(this.rightChild != null)
+			this.rightChild.printHelper(indent.toString());
+	}
 
 	/**
 	 * @param args
@@ -253,7 +292,7 @@ public class BinaryTree<V> {
 		System.out.println(bt1.contains(bt3));*/
 		
 		//checking substring in parse
-		String treeDescription = "one(two three(four(six seven) five))";
+		String treeDescription = "one(two(four(six seven) five))";
 		/*int firstParenOccurrence = treeDescription.indexOf('(');
 		String rootValue = treeDescription.substring(0, firstParenOccurrence);
 		String childrenValue = treeDescription.substring(firstParenOccurrence+1, treeDescription.length()-1);*/
@@ -273,6 +312,8 @@ public class BinaryTree<V> {
 		root.inOrderTraversal();
 		System.out.println("-------------PostOrder Traversal-------------");
 		root.postOrderTraversal();
+		System.out.println("-------------Print-------------");
+		root.print();
 		
 		//checking string builder delete method
 		/*StringBuilder sb = new StringBuilder("dhyanam");
