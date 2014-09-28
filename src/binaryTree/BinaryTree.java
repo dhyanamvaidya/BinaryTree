@@ -212,14 +212,12 @@ public class BinaryTree<V> {
 	 * @return
 	 */
 	public static ArrayList<String> tokenizeChildren(String childrenValue) {
-		System.out.println("child we got: "+childrenValue);
 		ArrayList<String> tokenizedChildren = new ArrayList<String>();
 		StringBuilder temp = new StringBuilder("");
 		int parenCounter = 0;
 		for(int i=0; i<childrenValue.length(); i++) {
 			if(childrenValue.charAt(i) == ' ' || i == childrenValue.length()-1) {
 				temp.append(childrenValue.charAt(i));
-				System.out.println("Finale: "+temp.toString().trim());
 				tokenizedChildren.add(temp.toString().trim());
 				temp.delete(0, temp.length());
 			}
@@ -316,6 +314,63 @@ public class BinaryTree<V> {
 		}
 		return representation.toString();
 	}
+	
+	/**
+	 * Returns true if obj is a Tree and has the same shape
+	 * and contains the same values as this Tree
+	 * @Override
+	 */
+	@SuppressWarnings("unchecked")
+	public boolean equals(Object obj) {
+		if(obj != null && obj instanceof BinaryTree) {
+			final BinaryTree<V> other = (BinaryTree<V>) obj;
+			if(this.getValue().equals(other.getValue())) {
+				/* Check left subtree equality */
+				if(this.leftChild == null) {
+					if(other.leftChild != null)
+						return false;
+				}
+				else {
+					if(!this.leftChild.equals(other.leftChild))
+						return false;
+				}
+				
+				/* Check right subtree equality */
+				if(this.rightChild == null) {
+					if(other.rightChild != null)
+						return false;
+				}
+				else {
+					if(!this.rightChild.equals(other.rightChild))
+						return false;
+				}
+				return true;
+			}
+			return false;
+		}
+		return false;
+	}
+	
+	/**
+	 * Returns the hash code value for this BinaryTree. The hash code of
+	 * a BinaryTree is defined to be the sum of the hash codes of root and
+	 * its left child and its right child. This ensures that node1.equals(node2)
+	 * implies that node1.hashCode()==node2.hashCode() for any two nodes node1
+	 * and node2 of type BinaryTree as required by the general contract of Object.hashCode().
+	 * 	@Override
+	 */
+    public int hashCode() {
+		if(this == null)
+			return 0;
+    	int rootHash = this.getValue().hashCode();
+    	int leftChildHash = 0;
+    	if(this.leftChild != null)
+    		this.getLeftChild().hashCode();
+    	int rightChildHash = 0;
+    	if(this.rightChild != null)
+    		this.getRightChild().hashCode();
+    	return 17 * (rootHash + leftChildHash + rightChildHash);
+	}
 
 	/**
 	 * @param args
@@ -330,7 +385,7 @@ public class BinaryTree<V> {
 		System.out.println(bt1.contains(bt3));*/
 		
 		//checking substring in parse
-		String treeDescription = "one(two(four(six seven) five) three)";
+		String treeDescription = "one(two(four(six seven) five))";
 		/*int firstParenOccurrence = treeDescription.indexOf('(');
 		String rootValue = treeDescription.substring(0, firstParenOccurrence);
 		String childrenValue = treeDescription.substring(firstParenOccurrence+1, treeDescription.length()-1);*/
@@ -354,6 +409,13 @@ public class BinaryTree<V> {
 		root.print();
 		System.out.println("-------------ToString-------------");
 		System.out.println(root.toString());
+		
+//		BinaryTree<String> anotherRoot = BinaryTree.parse(treeDescription);
+		BinaryTree<String> anotherRoot = BinaryTree.parse("1(2 3)");
+		System.out.println(root.equals(anotherRoot));
+		System.out.println("Size: "+anotherRoot.size());
+		System.out.println(root.hashCode() + " -- "+anotherRoot.hashCode());
+		System.out.println("3".hashCode() + " -- "+"3".hashCode());
 		
 		//checking string builder delete method
 		/*StringBuilder sb = new StringBuilder("dhyanam");
