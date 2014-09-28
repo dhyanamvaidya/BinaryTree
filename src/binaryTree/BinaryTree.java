@@ -371,7 +371,11 @@ public class BinaryTree<V> {
     	return 17 * (rootHash + leftChildHash + rightChildHash);
 	}
     
-    @SuppressWarnings("rawtypes")
+    /**
+     * Returns the LinkedList containing only the leaves of this BinaryTree on which
+     * this method is called
+     * @return
+     */
 	public LinkedList<BinaryTree<V>> getLeaves() {
     	LinkedList<BinaryTree<V>> list = new LinkedList<BinaryTree<V>>();
     	if(this.leftChild == null && this.rightChild == null)
