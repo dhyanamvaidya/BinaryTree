@@ -44,7 +44,8 @@ public class BinaryTree<V> {
 	 * @param leftChild the leftChild to set
 	 */
 	public void setLeftChild(BinaryTree<V> leftChild) {
-		this.leftChild = leftChild;
+		if(!this.contains(leftChild))
+			this.leftChild = leftChild;
 	}
 
 	/**
@@ -58,7 +59,8 @@ public class BinaryTree<V> {
 	 * @param rightChild the rightChild to set
 	 */
 	public void setRightChild(BinaryTree<V> rightChild) {
-		this.rightChild = rightChild;
+		if(!this.contains(rightChild))
+			this.rightChild = rightChild;
 	}
 	
 	public BinaryTree(V value) {
