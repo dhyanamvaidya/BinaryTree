@@ -20,6 +20,7 @@ public class BinaryTree<V> {
 	private BinaryTree<V> leftChild;
 	private BinaryTree<V> rightChild;
 	
+	
 	/**
 	 * @return the value
 	 */
@@ -445,6 +446,54 @@ public class BinaryTree<V> {
 			return leftSubTreeHeight > rightSubTreeHeight ? leftSubTreeHeight : rightSubTreeHeight;
 		}
 	}
+	
+	/**
+	 * Returns the Kth Largest element present in the BinaryTree rooted at this node or NULL
+	 * if not present
+	 * This method will give accurate results only if the BinaryTree on which this method is
+	 * called is a BinarySearchTree
+	 * @param k
+	 * @return
+	 */
+	public BinaryTree<V> getKthLargestNode(int k) {
+		if(k > this.size()) {
+			return null;
+		}
+		
+		if(this.rightChild != null && k < this.rightChild.size()+1) {
+			return this.rightChild.getKthLargestNode(k);
+		}
+		else if(this.rightChild != null && k > this.rightChild.size()+1) {
+			return this.leftChild.getKthLargestNode(k-(this.rightChild.size()+1));
+		}
+		else {
+			return this;
+		}
+	}
+	
+	/**
+	 * Returns the Kth Smallest element present in the BinaryTree rooted at this node or NULL
+	 * if not present
+	 * This method will give accurate results only if the BinaryTree on which this method is
+	 * called is a BinarySearchTree
+	 * @param k
+	 * @return
+	 */
+	public BinaryTree<V> getKthSmallestNode(int k) {
+		if(k > this.size()) {
+			return null;
+		}
+		
+		if(this.leftChild != null && k < this.leftChild.size()+1) {
+			return this.leftChild.getKthSmallestNode(k);
+		}
+		else if(this.leftChild != null && k > this.leftChild.size()+1) {
+			return this.rightChild.getKthSmallestNode(k-(this.leftChild.size()+1));
+		}
+		else {
+			return this;
+		}
+	}
 
 	/**
 	 * @param args
@@ -508,6 +557,19 @@ public class BinaryTree<V> {
 		for(BinaryTree<String> bt : l)
 			System.out.println(bt.value);
 		
+		System.out.println("-------------PrintNewTree-------------");
+		BinaryTree<String> oneMoreRoot = BinaryTree.parse("10(5(2(1 3) 8(6 9)) 15(12(11 13) 18(16 20)))");
+		oneMoreRoot.print();
+		System.out.println("Root value: "+oneMoreRoot.value+"\n\n");
+		//oneMoreRoot.counterPostOrderTraversal();
+		
+		int k = 20;
+		System.out.println("\n\n-------------PrintKthLargest-------------");
+		BinaryTree<String> b = oneMoreRoot.getKthLargestNode(k);
+		System.out.println(b.value);
+		System.out.println("\n\n-------------PrintKthSmallest-------------");
+		b = oneMoreRoot.getKthSmallestNode(k);
+		System.out.println(b.value);
 	}
 
 }
