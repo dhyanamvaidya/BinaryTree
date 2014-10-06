@@ -159,6 +159,29 @@ public class BinaryTree<V> {
         return this.numberOfChildren() == 0;
     }
     
+    /**
+	 * Returns <code>true</code> if this BinaryTree contains the
+     * given node (not an equal node). The root of this tree
+     * is included in the recursive search
+	 * 
+	 * @param node The node to be searched for
+	 * @return
+	 */
+	public boolean contains(BinaryTree<V> node) {
+		if(this == node)
+			return true;
+		
+		if(this.leftChild != null)
+			if(this.leftChild.contains(node))
+				return true;
+		
+		if(this.rightChild != null)
+			if(this.rightChild.contains(node))
+				return true;
+
+		return false;
+	}
+	
 	/**
 	 * Returns the number of nodes including the root in the Binary Tree rooted at this node
 	 * @return
@@ -218,29 +241,6 @@ public class BinaryTree<V> {
 		this.value = null;
 		this.leftChild = null;
 		this.rightChild = null;
-	}
-	
-	/**
-	 * Returns true if this BinaryTree contains the specified BinaryTree node
-	 * @param key
-	 * @return
-	 */
-	public boolean contains(BinaryTree<V> key) {
-		if(key == null)
-			return false;
-		
-		if(this == key)
-			return true;
-		
-		if(this.leftChild != null)
-			if(this.leftChild.contains(key))
-				return true;
-		
-		if(this.rightChild != null)
-			if(this.rightChild.contains(key))
-				return true;
-
-		return false;
 	}
 
 	/**
