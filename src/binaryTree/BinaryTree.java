@@ -5,14 +5,21 @@ package binaryTree;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.NoSuchElementException;
 
 /**
- * @author dhyanamvaidya
  * Binary Tree is a node-based binary tree data structure which has the following properties:
  *  -- Each node can contain left and right child tree nodes
  *  -- Both the left and right subtrees must also be binary trees 
  *  -- It can be used (extended) as a Binary Search Tree where the left child of a node is lesser in
  *  	value than the root and right child is greater in value than the root
+ *  
+ * Each object in the BinaryTree class represents a single node; however, nodes are linked together,
+ * so that any node may be considered as the "root" of a complete tree
+ *  
+ *  @author Dhyanam Vaidya
+ *  @version 26 September 2014
+ *  @param <V> The type of values held in the Tree
  */
 public class BinaryTree<V> {
 	
@@ -20,22 +27,46 @@ public class BinaryTree<V> {
 	private BinaryTree<V> leftChild;
 	private BinaryTree<V> rightChild;
 	
+	/**
+	 * Creates a BinaryTree node with the given value
+	 * @param value The value to put in this node
+	 */
+	public BinaryTree(V value) {
+		this.value = value;
+		this.leftChild = null;
+		this.rightChild = null;
+	}
 	
 	/**
-	 * @return the value
+	 * Creates a BinaryTree node and sets its plus its left and right child values with the given values
+	 * @param value The value to put in this node
+	 * @param leftChild The left child node
+	 * @param rightChild The right child node
+	 */
+	public BinaryTree(V value, BinaryTree<V> leftChild, BinaryTree<V> rightChild) {
+		this.value = value;
+		this.leftChild = leftChild;
+		this.rightChild = rightChild;
+	}
+	
+	/**
+	 * Gets the value in this node of the BinaryTree
+	 * @return The value in this node
 	 */
 	public V getValue() {
 		return value;
 	}
 
 	/**
-	 * @param value the value to set
+	 * Sets the value in this node of the BinaryTree
+	 * @param value The value to be set
 	 */
 	public void setValue(V value) {
 		this.value = value;
 	}
 
 	/**
+	 * Gets the value of the left child of this BinaryTree node
 	 * @return the leftChild
 	 */
 	public BinaryTree<V> getLeftChild() {
@@ -43,7 +74,8 @@ public class BinaryTree<V> {
 	}
 
 	/**
-	 * @param leftChild the leftChild to set
+	 * Sets the node supplied as the left child of this BinaryTree node
+	 * @param leftChild The leftChild to be set
 	 */
 	public void setLeftChild(BinaryTree<V> leftChild) {
 		if(!this.contains(leftChild))
@@ -51,6 +83,7 @@ public class BinaryTree<V> {
 	}
 
 	/**
+	 * Gets the value of the right child of this BinaryTree node
 	 * @return the rightChild
 	 */
 	public BinaryTree<V> getRightChild() {
@@ -58,24 +91,53 @@ public class BinaryTree<V> {
 	}
 
 	/**
-	 * @param rightChild the rightChild to set
+	 * Sets the node supplied as the right child of this BinaryTree node
+	 * @param rightChild The rightChild to be set
 	 */
 	public void setRightChild(BinaryTree<V> rightChild) {
 		if(!this.contains(rightChild))
 			this.rightChild = rightChild;
 	}
 	
-	public BinaryTree(V value) {
-		this.value = value;
-		this.leftChild = null;
-		this.rightChild = null;
-	}
-	
-	public BinaryTree(V value, BinaryTree<V> leftChild, BinaryTree<V> rightChild) {
-		this.value = value;
-		this.leftChild = leftChild;
-		this.rightChild = rightChild;
-	}
+	/**
+     * Removes and returns the left child of this BinaryTree (as a
+     * complete subtree), or throws a NoSuchElementException if
+     * the left child is not present
+     * 
+     * @return The left child subtree that is removed
+     * @throws NoSuchElementException If there is no such child
+     */
+    public BinaryTree<V> removeLeftChild() throws NoSuchElementException {
+        try {
+        	BinaryTree<V> leftChild = this.getLeftChild();
+        	leftChild.getValue();
+        	this.setLeftChild(null);
+            return leftChild;
+        }
+        catch (Exception e) {
+            throw new NoSuchElementException(e + "");
+        }
+    }
+    
+    /**
+     * Removes and returns the right child of this BinaryTree (as a
+     * complete subtree), or throws a NoSuchElementException if
+     * the left child is not present
+     * 
+     * @return The right child subtree that is removed
+     * @throws NoSuchElementException If there is no such child
+     */
+    public BinaryTree<V> removeRightChild() throws NoSuchElementException {
+        try {
+        	BinaryTree<V> rightChild = this.getRightChild();
+        	rightChild.getValue();
+        	this.setRightChild(null);
+            return rightChild;
+        }
+        catch (Exception e) {
+            throw new NoSuchElementException(e + "");
+        }
+    }
 	
 	/**
 	 * Returns the number of nodes including the root in the Binary Tree rooted at this node
@@ -213,7 +275,7 @@ public class BinaryTree<V> {
 	 * @param childrenValue
 	 * @return
 	 */
-	public static ArrayList<String> tokenizeChildren(String childrenValue) {
+	private static ArrayList<String> tokenizeChildren(String childrenValue) {
 		ArrayList<String> tokenizedChildren = new ArrayList<String>();
 		StringBuilder temp = new StringBuilder("");
 		int parenCounter = 0;
@@ -318,14 +380,19 @@ public class BinaryTree<V> {
 	}
 	
 	/**
-	 * Returns true if obj is a Tree and has the same shape
-	 * and contains the same values as this Tree
-	 * @Override
-	 */
-	@SuppressWarnings("unchecked")
+	 * Returns <code>true</code> if (1) given object 
+	 * is a BinaryTree, and (2) the value field of the
+	 * two BinaryTrees are equal, and (3) each child of
+	 * one BinaryTree equals the corresponding child of
+	 * the other BinaryTree
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 * @param obj The object to be compared with
+	 */	
+	@Override
 	public boolean equals(Object obj) {
 		if(obj != null && obj instanceof BinaryTree) {
-			final BinaryTree<V> other = (BinaryTree<V>) obj;
+			final BinaryTree<?> other = (BinaryTree<?>) obj;
 			if(this.getValue().equals(other.getValue())) {
 				/* Check left subtree equality */
 				if(this.leftChild == null) {
