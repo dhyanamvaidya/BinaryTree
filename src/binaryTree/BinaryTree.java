@@ -138,7 +138,19 @@ public class BinaryTree<V> {
             throw new NoSuchElementException(e + "");
         }
     }
-	
+
+    /**
+     * Returns the number of (immediate) children of this node.
+     * @return The number of children of this node.
+     */
+    public int numberOfChildren() {
+    	if(this.leftChild == null && this.rightChild == null)
+    		return 0;
+    	if(this.leftChild != null && this.rightChild != null)
+    		return 2;
+    	return 1;
+    }
+    
 	/**
 	 * Returns the number of nodes including the root in the Binary Tree rooted at this node
 	 * @return
