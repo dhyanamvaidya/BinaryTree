@@ -181,69 +181,102 @@ public class BinaryTree<V> {
 
 		return false;
 	}
-	
+
 	/**
-	 * Returns the number of nodes including the root in the Binary Tree rooted at this node
-	 * @return
-	 */
-	public int size() {
-		int leftSubTreeSize = 0;
-		if(this.leftChild != null)
-			leftSubTreeSize = this.leftChild.size();
-		
-		int rightSubTreeSize = 0;
-		if(this.rightChild != null)
-			rightSubTreeSize = this.rightChild.size();
-		
-		return leftSubTreeSize + rightSubTreeSize + 1;
-	}
-	
-	/**
-	 * Prints the nodes of this BinaryTree in an inOrder traversal
-	 * @return
-	 */
-	public void inOrderTraversal() {
-		if(this.leftChild != null)
-			this.leftChild.inOrderTraversal();
-		System.out.println(this.getValue());
-		if(this.rightChild != null)
-			this.rightChild.inOrderTraversal();
-	}
-	
-	/**
-	 * Prints the nodes of this BinaryTree in a preOrder traversal
-	 * @return
-	 */
-	public void preOrderTraversal() {
-		System.out.println(this.getValue());
-		if(this.leftChild != null)
-			this.leftChild.preOrderTraversal();
-		if(this.rightChild != null)
-			this.rightChild.preOrderTraversal();
-	}
-	
-	/**
-	 * Prints the nodes of this BinaryTree in a postOrder traversal
-	 * @return
-	 */
-	public void postOrderTraversal() {
-		if(this.leftChild != null)
-			this.leftChild.postOrderTraversal();
-		if(this.rightChild != null)
-			this.rightChild.postOrderTraversal();
-		System.out.println(this.getValue());
-	}
-	
-	/**
-	 * Removes all of the mappings from this BinaryTree and resets the node with null values
-	 */
-	public void clear() {
-		this.value = null;
-		this.leftChild = null;
-		this.rightChild = null;
+	 * Returns <code>true</code> if (1) given object 
+	 * is a BinaryTree, and (2) the value field of the
+	 * two BinaryTrees are equal, and (3) each child of
+	 * one BinaryTree equals the corresponding child of
+	 * the other BinaryTree
+	 * 
+	 * @see java.lang.Object#equals(java.lang.Object)
+	 * @param obj The object to be compared with
+	 */	
+	@Override
+	public boolean equals(Object obj) {
+		if(obj != null && obj instanceof BinaryTree) {
+			final BinaryTree<?> other = (BinaryTree<?>) obj;
+			if(this.getValue().equals(other.getValue())) {
+				/* Check left subtree equality */
+				if(this.leftChild == null) {
+					if(other.leftChild != null)
+						return false;
+				}
+				else {
+					if(!this.leftChild.equals(other.leftChild))
+						return false;
+				}
+				
+				/* Check right subtree equality */
+				if(this.rightChild == null) {
+					if(other.rightChild != null)
+						return false;
+				}
+				else {
+					if(!this.rightChild.equals(other.rightChild))
+						return false;
+				}
+				return true;
+			}
+			return false;
+		}
+		return false;
 	}
 
 	/**
+	 * Returns a String representing this Tree. The returned String
+	 * is in the same format as the parse method expects as input.
+	 * For example, for the Tree:
+	 *                            one
+	 *                            / \
+	 *                           /   \
+	 *                         two  three
+	 *                         		 /\
+	 *                         		/  \
+	 *                            four five
+	 *                             /\
+	 *                            /  \
+	 *                          six seven
+	 * 
+	 * @return toString method will return the below String,
+	 * "one(two three(four(six seven) five))"
+	 * @see java.lang.Object#toString()
+	*/
+	@Override
+	public String toString() {
+		StringBuilder representation = new StringBuilder("");
+		representation.append(this.getValue());
+		if(this.leftChild != null && this.rightChild != null) {
+			representation.append("(");
+			if(this.leftChild != null) 
+				representation.append(this.leftChild.toString());
+			if(this.rightChild != null)
+				representation.append(" "+this.rightChild.toString());
+			representation.append(")");
+		}
+		return representation.toString();
+	}
+
+	/**
+	 * Returns the hash code value for this BinaryTree. The hash code of
+	 * a BinaryTree is defined to be the sum of the hash codes of root and
+	 * its left child and its right child. This ensures that node1.equals(node2)
+	 * implies that node1.hashCode()==node2.hashCode() for any two nodes node1
+	 * and node2 of type BinaryTree as required by the general contract of Object.hashCode().
+	 * 	@Override
+	 */
+    public int hashCode() {
+    	int rootHash = this.getValue().hashCode();
+    	int leftChildHash = 0;
+    	if(this.leftChild != null)
+    		this.getLeftChild().hashCode();
+    	int rightChildHash = 0;
+    	if(this.rightChild != null)
+    		this.getRightChild().hashCode();
+    	return 17 * (rootHash + leftChildHash + rightChildHash);
+	}
+	
+    /**
 	 * Translates a String description of a tree into a Tree<String> object. 
 	 * The treeDescription has the form value(child child), where 
 	 * a value is any sequence of characters not containing parentheses or 
@@ -261,8 +294,9 @@ public class BinaryTree<V> {
 	 *                             /\
 	 *                            /  \
 	 *                          six seven
-	 * @param treeDescription
-	 * @return
+	 * 
+	 * @param treeDescription The String to be parsed
+	 * @return The resultant Tree&lt;String&lt;
 	 */
 	public static BinaryTree<String> parse(String treeDescription) {
 		BinaryTree<String> root = null;
@@ -286,6 +320,65 @@ public class BinaryTree<V> {
 			}
 		}
 		return root;
+	}
+    
+	/**
+	 * Returns the number of nodes including the root in the Binary Tree
+	 * rooted at this node
+	 * @return The number of total nodes in this subtree
+	 */
+	public int size() {
+		int leftSubTreeSize = 0;
+		if(this.leftChild != null)
+			leftSubTreeSize = this.leftChild.size();
+		
+		int rightSubTreeSize = 0;
+		if(this.rightChild != null)
+			rightSubTreeSize = this.rightChild.size();
+		
+		return leftSubTreeSize + rightSubTreeSize + 1;
+	}
+	
+	/**
+	 * Prints the nodes of this BinaryTree in an inOrder traversal to the console
+	 */
+	public void inOrderTraversal() {
+		if(this.leftChild != null)
+			this.leftChild.inOrderTraversal();
+		System.out.println(this.getValue());
+		if(this.rightChild != null)
+			this.rightChild.inOrderTraversal();
+	}
+	
+	/**
+	 * Prints the nodes of this BinaryTree in a preOrder traversal to the console
+	 */
+	public void preOrderTraversal() {
+		System.out.println(this.getValue());
+		if(this.leftChild != null)
+			this.leftChild.preOrderTraversal();
+		if(this.rightChild != null)
+			this.rightChild.preOrderTraversal();
+	}
+	
+	/**
+	 * Prints the nodes of this BinaryTree in a postOrder traversal to the console
+	 */
+	public void postOrderTraversal() {
+		if(this.leftChild != null)
+			this.leftChild.postOrderTraversal();
+		if(this.rightChild != null)
+			this.rightChild.postOrderTraversal();
+		System.out.println(this.getValue());
+	}
+	
+	/**
+	 * Removes all of the mappings from this BinaryTree and resets the node with null values
+	 */
+	public void clear() {
+		this.value = null;
+		this.leftChild = null;
+		this.rightChild = null;
 	}
 	
 	/**
@@ -355,7 +448,7 @@ public class BinaryTree<V> {
 
 	/**
 	 * Helper method to print which does the actual work
-	 * @param string
+	 * @param string The string containing the information about the indent
 	 */
 	private void printHelper(String string) {
 		StringBuilder indent = new StringBuilder(string);
@@ -366,103 +459,11 @@ public class BinaryTree<V> {
 		if(this.rightChild != null)
 			this.rightChild.printHelper(indent.toString());
 	}
-	
-	/**
-	 * Returns a String representing this Tree. The returned String
-	 * is in the same format as the parse method expects as input.
-	 * For example, for the Tree:
-	 *                            one
-	 *                            / \
-	 *                           /   \
-	 *                         two  three
-	 *                         		 /\
-	 *                         		/  \
-	 *                            four five
-	 *                             /\
-	 *                            /  \
-	 *                          six seven
-	 * toString method will return the below String,
-	 * "one(two three(four(six seven) five))"
-	 * @Override
-	*/
-	public String toString() {
-		StringBuilder representation = new StringBuilder("");
-		representation.append(this.getValue());
-		if(this.leftChild != null && this.rightChild != null) {
-			representation.append("(");
-			if(this.leftChild != null) 
-				representation.append(this.leftChild.toString());
-			if(this.rightChild != null)
-				representation.append(" "+this.rightChild.toString());
-			representation.append(")");
-		}
-		return representation.toString();
-	}
-	
-	/**
-	 * Returns <code>true</code> if (1) given object 
-	 * is a BinaryTree, and (2) the value field of the
-	 * two BinaryTrees are equal, and (3) each child of
-	 * one BinaryTree equals the corresponding child of
-	 * the other BinaryTree
-	 * 
-	 * @see java.lang.Object#equals(java.lang.Object)
-	 * @param obj The object to be compared with
-	 */	
-	@Override
-	public boolean equals(Object obj) {
-		if(obj != null && obj instanceof BinaryTree) {
-			final BinaryTree<?> other = (BinaryTree<?>) obj;
-			if(this.getValue().equals(other.getValue())) {
-				/* Check left subtree equality */
-				if(this.leftChild == null) {
-					if(other.leftChild != null)
-						return false;
-				}
-				else {
-					if(!this.leftChild.equals(other.leftChild))
-						return false;
-				}
-				
-				/* Check right subtree equality */
-				if(this.rightChild == null) {
-					if(other.rightChild != null)
-						return false;
-				}
-				else {
-					if(!this.rightChild.equals(other.rightChild))
-						return false;
-				}
-				return true;
-			}
-			return false;
-		}
-		return false;
-	}
-	
-	/**
-	 * Returns the hash code value for this BinaryTree. The hash code of
-	 * a BinaryTree is defined to be the sum of the hash codes of root and
-	 * its left child and its right child. This ensures that node1.equals(node2)
-	 * implies that node1.hashCode()==node2.hashCode() for any two nodes node1
-	 * and node2 of type BinaryTree as required by the general contract of Object.hashCode().
-	 * 	@Override
-	 */
-    public int hashCode() {
-    	int rootHash = this.getValue().hashCode();
-    	int leftChildHash = 0;
-    	if(this.leftChild != null)
-    		this.getLeftChild().hashCode();
-    	int rightChildHash = 0;
-    	if(this.rightChild != null)
-    		this.getRightChild().hashCode();
-    	return 17 * (rootHash + leftChildHash + rightChildHash);
-	}
     
     /**
      * Returns the LinkedList containing only the leaves of this BinaryTree on which
      * this method is called
-     * @return
+     * @return The LinkedList containing the leaves of this BinaryTree
      */
 	public LinkedList<BinaryTree<V>> getLeaves() {
     	LinkedList<BinaryTree<V>> list = new LinkedList<BinaryTree<V>>();
@@ -478,9 +479,9 @@ public class BinaryTree<V> {
     }
     
     /**
-     * Returns true if the left subtree of this node is the same as its
+     * Returns <code>true</code> if the left subtree of this node is the same as its
      * right subtree in values and shape
-     * @return
+     * @return <code>true</code> if the node is symmetric
      */
     public boolean isSymmetric() {
     	if(this.leftChild == null)
@@ -490,9 +491,9 @@ public class BinaryTree<V> {
 	}
     
     /**
-     * Returns true if difference between heights of its left subtrees and right subtrees
+     * Returns <code>true</code> if difference between heights of its left subtrees and right subtrees
      * is not more than 1 and left and right subtrees are balanced, otherwise return false.
-     * @return
+     * @return <code>true</code> if the BinaryTree is balanced
      */
     public boolean isBalanced() {
     	int leftSubTreeHeight = getHeightHelper(this.leftChild);
@@ -510,8 +511,7 @@ public class BinaryTree<V> {
      * 	if there are 2 levels of nodes the height is 1 and so on
      * 	A null tree (no nodes except the null node) is defined to have a height of Ð1
      * Height of a tree is the depth of farthest most leaf node from the root (max depth)
-     * @param root
-     * @return
+     * @return The height of this BinaryTree
      */
 	public int getHeight() {
 		return getHeightHelper(this);
@@ -519,8 +519,8 @@ public class BinaryTree<V> {
 	
 	/**
 	 * Private helper method to the getHeight() method which does the actual work
-	 * @param root
-	 * @return
+	 * @param root The root node whose height is to be returned
+	 * @return The height of this BinaryTree
 	 */
 	private int getHeightHelper(BinaryTree<V> root) {
 		if(root==null) {
@@ -539,8 +539,8 @@ public class BinaryTree<V> {
 	 * if not present
 	 * This method will give accurate results only if the BinaryTree on which this method is
 	 * called is a BinarySearchTree
-	 * @param k
-	 * @return
+	 * @param k The Kth largest element to be returned
+	 * @return The Kth largest element
 	 */
 	public BinaryTree<V> getKthLargestNode(int k) {
 		if(k > this.size()) {
@@ -563,8 +563,8 @@ public class BinaryTree<V> {
 	 * if not present
 	 * This method will give accurate results only if the BinaryTree on which this method is
 	 * called is a BinarySearchTree
-	 * @param k
-	 * @return
+	 * @param k The Kth smallest element to be returned
+	 * @return The Kth smallest element
 	 */
 	public BinaryTree<V> getKthSmallestNode(int k) {
 		if(k > this.size()) {
