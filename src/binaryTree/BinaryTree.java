@@ -140,7 +140,7 @@ public class BinaryTree<V> {
     }
 
     /**
-     * Returns the number of (immediate) children of this node.
+     * Returns the number of (immediate) children of this node
      * @return The number of children of this node.
      */
     public int numberOfChildren() {
@@ -149,6 +149,14 @@ public class BinaryTree<V> {
     	if(this.leftChild != null && this.rightChild != null)
     		return 2;
     	return 1;
+    }
+    
+    /**
+     * Returns <code>true</code> if this node has no children.
+     * @return <code>true</code> if this node is a leaf.
+     */
+    public boolean isLeaf() {
+        return this.numberOfChildren() == 0;
     }
     
 	/**
