@@ -509,7 +509,7 @@ public class BinaryTree<V> {
      * Returns the height of the BinaryTree on which this method is called
      * For a tree with just one node, the root node, the height is defined to be 0,
      * 	if there are 2 levels of nodes the height is 1 and so on
-     * 	A null tree (no nodes except the null node) is defined to have a height of Ð1
+     * 	A null tree (no nodes except the null node) is defined to have a height of negative 1
      * Height of a tree is the depth of farthest most leaf node from the root (max depth)
      * @return The height of this BinaryTree
      */
@@ -543,19 +543,17 @@ public class BinaryTree<V> {
 	 * @return The Kth largest element
 	 */
 	public BinaryTree<V> getKthLargestNode(int k) {
-		if(k > this.size()) {
+		if(k > this.size())
 			return null;
-		}
 		
-		if(this.rightChild != null && k < this.rightChild.size()+1) {
+		if(this.rightChild != null && k < this.rightChild.size()+1) 
 			return this.rightChild.getKthLargestNode(k);
-		}
-		else if(this.rightChild != null && k > this.rightChild.size()+1) {
+		
+		else if(this.rightChild != null && k > this.rightChild.size()+1) 
 			return this.leftChild.getKthLargestNode(k-(this.rightChild.size()+1));
-		}
-		else {
+		
+		else 
 			return this;
-		}
 	}
 	
 	/**
@@ -567,19 +565,17 @@ public class BinaryTree<V> {
 	 * @return The Kth smallest element
 	 */
 	public BinaryTree<V> getKthSmallestNode(int k) {
-		if(k > this.size()) {
+		if(k > this.size()) 
 			return null;
-		}
 		
-		if(this.leftChild != null && k < this.leftChild.size()+1) {
+		if(this.leftChild != null && k < this.leftChild.size()+1) 
 			return this.leftChild.getKthSmallestNode(k);
-		}
-		else if(this.leftChild != null && k > this.leftChild.size()+1) {
+		
+		else if(this.leftChild != null && k > this.leftChild.size()+1) 
 			return this.rightChild.getKthSmallestNode(k-(this.leftChild.size()+1));
-		}
-		else {
+		
+		else 
 			return this;
-		}
 	}
 
 	/**
