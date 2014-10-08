@@ -3,13 +3,13 @@ BinaryTree
 There is no BinaryTree class available in java.util package out of the box. 
 BinaryTrees and in specific BinarySearchTrees are at the heart of so many of
 the core data structure implementations in all the programming languages.
-
 It is of utmost importance to be fundamentally clear with Trees in order to 
-understand other data structures which have been built on top of it. This 
-implementation of BinaryTree can be used to understand the behavior of this 
-recursively defined data structure. So many times while learning this data structure 
-for the first time, it can throw a curve ball at you. This is because of the 
-recursive nature of it. That can be a bit tricky to get your head around but 
+understand other data structures which have been built on top of it. 
+
+This implementation of BinaryTree can be used to understand the behavior of this 
+recursively defined data structure. Many times, while learning this data structure 
+for the first time, it can throw a curveball at you. This is because of the 
+recursive nature of it. It can be a bit tricky to get your head around but 
 be rest assured, once you start thinking recursively, you'll fall in love with it.
 
 Making a full fledged BinaryTree by manually linking various individual tree nodes can be a
@@ -22,7 +22,7 @@ kinds of methods it has. Understand how it is working. Find bugs if you can and 
 solve them.
 
 Important:
-If you take inspiration from this codebase to solve your homework assignments, then do mention about
-this in the reference section. Taking cue from other's work is not a problem, but not acknowledging
-that fact is! :-)
+If you take inspiration from this codebase to solve your homework assignments, then do 
+mention about this in your code. Taking cue from other's work is not a problem, but not 
+acknowledging that fact is! :-)
 
