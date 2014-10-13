@@ -7,10 +7,10 @@ It is of utmost importance to be fundamentally clear with Trees in order to
 understand other data structures which have been built on top of it. 
 
 This implementation of BinaryTree can be used to understand the behavior of this 
-recursively defined data structure. Many times, while learning this data structure 
-for the first time, it can throw a curveball at you. This is because of the 
-recursive nature of it. It can be a bit tricky to get your head around but 
-be rest assured, once you start thinking recursively, you'll fall in love with it.
+recursively defined data structure. Trees can throw a curveball at the first time
+learners because of its recursive nature. It can be a bit tricky to get your head
+around initially, but be rest assured, once you start thinking recursively, you'll 
+fall in love with it. :-)
 
 Making a full fledged BinaryTree by manually linking various individual tree nodes can be a
 pain in the neck. So here I have provided a special method which builds a tree from an easy
