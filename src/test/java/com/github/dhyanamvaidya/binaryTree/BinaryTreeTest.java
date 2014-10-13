@@ -1,7 +1,7 @@
 /**
  * 
  */
-package tests;
+package test.java.com.github.dhyanamvaidya.binaryTree;
 
 import static org.junit.Assert.*;
 

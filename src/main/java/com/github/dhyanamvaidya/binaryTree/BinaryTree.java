@@ -1,7 +1,7 @@
 /**
  * 
  */
-package binaryTree;
+package main.java.com.github.dhyanamvaidya.binaryTree;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
