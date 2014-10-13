@@ -143,7 +143,7 @@ public class BinaryTree<V> {
      * Returns the number of (immediate) children of this node
      * @return The number of children of this node.
      */
-    public int numberOfChildren() {
+    public int getNumberOfChildren() {
     	if(this.leftChild == null && this.rightChild == null)
     		return 0;
     	if(this.leftChild != null && this.rightChild != null)
@@ -156,7 +156,7 @@ public class BinaryTree<V> {
      * @return <code>true</code> if this node is a leaf.
      */
     public boolean isLeaf() {
-        return this.numberOfChildren() == 0;
+        return this.getNumberOfChildren() == 0;
     }
     
     /**
@@ -196,7 +196,11 @@ public class BinaryTree<V> {
 	public boolean equals(Object obj) {
 		if(obj != null && obj instanceof BinaryTree) {
 			final BinaryTree<?> other = (BinaryTree<?>) obj;
-			if(this.getValue().equals(other.getValue())) {
+			/* Check for null equality first, If both of them are not null then if 'this' object is not null
+			 * then check the value equality. This is done to prevent NullPointerExceptions from being thrown */
+			if( (this.getValue() == other.getValue()) || 
+				(this.getValue() != null && (this.getValue().equals(other.getValue()))) ) {
+				
 				/* Check left subtree equality */
 				if(this.leftChild == null) {
 					if(other.leftChild != null)
@@ -322,6 +326,46 @@ public class BinaryTree<V> {
 		return root;
 	}
     
+	
+	/**
+	 * Helper method which tokenizes the given string so that it can be split
+	 * into two separate child strings out of which two separate BinaryTree
+	 * node can be made
+	 * @param childrenValue
+	 * @return
+	 */
+	private static ArrayList<String> tokenizeChildren(String childrenValue) {
+		ArrayList<String> tokenizedChildren = new ArrayList<String>();
+		StringBuilder temp = new StringBuilder("");
+		int parenCounter = 0;
+		for(int i=0; i<childrenValue.length(); i++) {
+			if(childrenValue.charAt(i) == ' ' || i == childrenValue.length()-1) {
+				temp.append(childrenValue.charAt(i));
+				tokenizedChildren.add(temp.toString().trim());
+				temp.delete(0, temp.length());
+			}
+			else if(childrenValue.charAt(i) == '(') {
+				parenCounter += 1;
+				temp.append(childrenValue.charAt(i));
+				i += 1;
+				while(parenCounter > 0) {
+					if(childrenValue.charAt(i) == '(')
+						parenCounter += 1;
+					else if(childrenValue.charAt(i) == ')')
+						parenCounter -= 1;
+					temp.append(childrenValue.charAt(i));
+					i += 1;
+				}
+				tokenizedChildren.add(temp.toString().trim());
+				temp.delete(0, temp.length());
+			}
+			else {
+				temp.append(childrenValue.charAt(i));
+			}
+		}
+		return tokenizedChildren;
+	}
+	
 	/**
 	 * Returns the number of nodes including the root in the Binary Tree
 	 * rooted at this node
@@ -379,45 +423,6 @@ public class BinaryTree<V> {
 		this.value = null;
 		this.leftChild = null;
 		this.rightChild = null;
-	}
-	
-	/**
-	 * Helper method which tokenizes the given string so that it can be split
-	 * into two separate child strings out of which two separate BinaryTree
-	 * node can be made
-	 * @param childrenValue
-	 * @return
-	 */
-	private static ArrayList<String> tokenizeChildren(String childrenValue) {
-		ArrayList<String> tokenizedChildren = new ArrayList<String>();
-		StringBuilder temp = new StringBuilder("");
-		int parenCounter = 0;
-		for(int i=0; i<childrenValue.length(); i++) {
-			if(childrenValue.charAt(i) == ' ' || i == childrenValue.length()-1) {
-				temp.append(childrenValue.charAt(i));
-				tokenizedChildren.add(temp.toString().trim());
-				temp.delete(0, temp.length());
-			}
-			else if(childrenValue.charAt(i) == '(') {
-				parenCounter += 1;
-				temp.append(childrenValue.charAt(i));
-				i += 1;
-				while(parenCounter > 0) {
-					if(childrenValue.charAt(i) == '(')
-						parenCounter += 1;
-					else if(childrenValue.charAt(i) == ')')
-						parenCounter -= 1;
-					temp.append(childrenValue.charAt(i));
-					i += 1;
-				}
-				tokenizedChildren.add(temp.toString().trim());
-				temp.delete(0, temp.length());
-			}
-			else {
-				temp.append(childrenValue.charAt(i));
-			}
-		}
-		return tokenizedChildren;
 	}
 	
 	/**
@@ -646,7 +651,7 @@ public class BinaryTree<V> {
 		System.out.println("Root value: "+oneMoreRoot.value+"\n\n");
 		//oneMoreRoot.counterPostOrderTraversal();
 		
-		int k = 20;
+		int k = 10;
 		System.out.println("\n\n-------------PrintKthLargest-------------");
 		BinaryTree<String> b = oneMoreRoot.getKthLargestNode(k);
 		System.out.println(b.value);
